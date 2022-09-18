@@ -1,27 +1,27 @@
-#
-# $Id: Makefile,v 1.4 2007/04/04 00:00:00 root Exp $
-#
+CC = gcc
+CFLAGS = -Wall -O3 -fomit-frame-pointer -funroll-loops -fforce-addr -falign-functions=4 -msse
+TARGET = ttaenc
+PREFIX = /usr/local
+INSTALL = install
+RM = rm -f
 
-CFLAGS	= -Wall -O3 -fomit-frame-pointer -funroll-loops \
-		  -fforce-addr -falign-functions=4 -msse
-TTAENC	= ttaenc
-INSDIR	= /usr/bin
+all: $(TARGET)
 
-ttaenc: $(patsubst %.c, %.o, $(wildcard *.c))
-	gcc $^ -o $@ $(CFLAGS)
+$(TARGET): src/$(TARGET).o
+	$(CC) $(CFLAGS) $^ -o $@
 
-%.o:	%.c
-	gcc -c $(CFLAGS) $<
-
-install:
-	[ -d "$(INSDIR)" ] || mkdir $(INSDIR)
-	if [ -n "$(TTAENC)" ]; then \
-		strip $(TTAENC) ; \
-		install -m 755 $(TTAENC) $(INSDIR) ; \
-	fi
-
-remove:
-	rm -f $(INSDIR)/$(TTAENC)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o $(TTAENC)
+	$(RM) src/$(TARGET).o $(TARGET)
+
+install:
+	$(INSTALL) -d $(PREFIX)/bin
+	$(INSTALL) -m 0755 $(TARGET) $(PREFIX)/bin/
+	$(INSTALL) -d $(PREFIX)/share/doc/$(TARGET)
+	$(INSTALL) -m 0644 ChangeLog-3.4.1 COPYING README.md $(PREFIX)/share/doc/$(TARGET)
+
+uninstall:
+	$(RM) $(PREFIX)/bin/$(TARGET)
+	$(RM) -r $(PREFIX)/share/doc/$(TARGET)

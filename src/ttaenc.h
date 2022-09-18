@@ -20,7 +20,9 @@
 #include <stdlib.h>
 
 #ifdef __GNUC__
+#ifndef __USE_ISOC99
 #define __USE_ISOC99
+#endif
 #endif
 
 #include <wchar.h>

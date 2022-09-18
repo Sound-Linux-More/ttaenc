@@ -1,3 +1,10 @@
+`ORG.SLM:`
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/Sound-Linux-More/ttaenc)
+![GitHub Release Date](https://img.shields.io/github/release-date/Sound-Linux-More/ttaenc)
+![GitHub repo size](https://img.shields.io/github/repo-size/Sound-Linux-More/ttaenc)
+![GitHub all releases](https://img.shields.io/github/downloads/Sound-Linux-More/ttaenc/total)
+![GitHub](https://img.shields.io/github/license/Sound-Linux-More/ttaenc)  
+
 TTA Lossless Audio compressor
 ===============================
 

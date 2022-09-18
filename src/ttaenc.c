@@ -882,7 +882,7 @@ int compress(FILE *fdin, FILE *fdout)
 }
 
 int test_file(FILE *fdin) {
-	unsigned int byte_size, data_size, checksum, errors;
+	unsigned int byte_size, checksum, errors;
 	unsigned int framelen, lastlen, fframes;
 	unsigned int framesize, st_size, *st;
 	unsigned char *data;
@@ -943,7 +943,6 @@ int test_file(FILE *fdin) {
 
 	byte_size = (tta_hdr.BitsPerSample + 7) / 8;
 	framelen = (int) (FRAME_TIME * tta_hdr.SampleRate);
-	data_size = tta_hdr.DataLength * byte_size * tta_hdr.NumChannels;
 	framesize = framelen * tta_hdr.NumChannels * byte_size + 4;
 	lastlen = tta_hdr.DataLength % framelen;
 	fframes = tta_hdr.DataLength / framelen + (lastlen ? 1 : 0);
@@ -1474,7 +1473,7 @@ main(int argc, char **argv)
 {
 	int i;
 	unsigned int j;
-	int farg = 0, parg = 0, act = 0;
+	int farg = 0, act = 0;
 	wchar_t *p;
 #ifdef _MSC
 	struct _wfinddata_t fdata;
@@ -1556,7 +1555,6 @@ next:				continue;
 				if ((hFile = _wfindfirst(file_in, &fdata)) == -1) {
 					if (i == argc - 1 && farg) {
 						wcscpy(out_path, file_in);
-						parg = 1;
 						if (_wmkdir(out_path) && errno != EEXIST)
 							tta_error(CREATE_ERROR, out_path);
 						continue;
@@ -1567,7 +1565,6 @@ next:				continue;
 				case _A_SUBDIR:
 					if (i == argc - 1 && farg) {
 						wcscpy(out_path, file_in);
-						parg = 1;
 					} else tta_error(FIND_ERROR, file_in);
 					break;
 				default:
@@ -1591,7 +1588,6 @@ next:				continue;
 				if (ret && errno == ENOENT) {
 					if (i == argc - 1 && farg) {
 						wcscpy(out_path, file_in);
-						parg = 1;
 						if (mkdir(argv[i], S_IRUSR | S_IWUSR | S_IXUSR))
 							tta_error(CREATE_ERROR, out_path);
 						continue;
@@ -1601,7 +1597,6 @@ next:				continue;
 				if (!ret && S_ISDIR(st.st_mode)) {
 					if (i == argc - 1 && farg) {
 						wcscpy(out_path, file_in);
-						parg = 1;
 						continue;
 					} else tta_error(FIND_ERROR, file_in);
 				}
